@@ -40,6 +40,10 @@ class ChooseAreaFragment : Fragment() {
     }
 
     private fun observe() {
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+            if (isLoading) showProgressDialog()
+            else closeProgressDialog()
+        })
         viewModel.currentLevel.observe(this, Observer { level ->
             when (level) {
                 LEVEL_PROVINCE -> {
@@ -60,10 +64,6 @@ class ChooseAreaFragment : Fragment() {
             adapter.notifyDataSetChanged()
             listView.setSelection(0)
             closeProgressDialog()
-        })
-        viewModel.isLoading.observe(this, Observer { isLoading ->
-            if (isLoading) showProgressDialog()
-            else closeProgressDialog()
         })
         viewModel.areaSelected.observe(this, Observer { selected ->
             if (selected && viewModel.selectedCounty != null) {
